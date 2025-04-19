@@ -1,4 +1,3 @@
-import "./App.css";
 import { NhostProvider } from "@nhost/react";
 import { nhost } from "./lib/nhost.js";
 import SignIn from "./signin.jsx";
