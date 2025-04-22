@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNhostClient, useFileUpload } from "@nhost/react";
+import { CgAttachment } from "react-icons/cg";
+import { useForm } from "react-hook-form";
+import TextBox from "./components/TextBox";
+import Button from "./components/Button";
+import ToDoItems from "./components/toDoItems";
 
 const deleteTodo = `
     mutation($id: uuid!) {
@@ -33,9 +38,15 @@ export default function Todos() {
   const [todoTitle, setTodoTitle] = useState("");
   const [todoAttachment, setTodoAttachment] = useState(null);
   const [fetchAll, setFetchAll] = useState(false);
-
   const nhostClient = useNhostClient();
   const { upload } = useFileUpload();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     async function fetchTodos() {
@@ -56,17 +67,16 @@ export default function Todos() {
     return () => {
       setFetchAll(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchAll]);
 
-  const handleCreateTodo = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    let todo = { title: data.title };
+    if (data.file && data.file.length > 0) {
+      const file = data.file[0];
 
-    let todo = { title: todoTitle };
-    if (todoAttachment) {
       const { id, error } = await upload({
-        file: todoAttachment,
-        name: todoAttachment.name,
+        file,
+        name: file.name,
       });
 
       if (error) {
@@ -86,6 +96,7 @@ export default function Todos() {
     setTodoTitle("");
     setTodoAttachment(null);
     setFetchAll(true);
+    reset();
   };
 
   const handleDeleteTodo = async (id) => {
@@ -140,69 +151,86 @@ export default function Todos() {
 
   return (
     <>
-      <div className="container">
-        <div className="form-section">
-          <h2>Add a new TODO</h2>
-          <form onSubmit={handleCreateTodo}>
-            <div className="input-group">
-              <label htmlFor="title">Title</label>
-              <input
-                id="title"
-                type="text"
-                placeholder="Title"
-                value={todoTitle}
-                onChange={(e) => setTodoTitle(e.target.value)}
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="file">File (optional)</label>
-              <input
-                id="file"
-                type="file"
-                onChange={(e) => setTodoAttachment(e.target.files[0])}
-              />
-            </div>
-            <div className="submit-group">
-              <button type="submit" disabled={!todoTitle}>
-                Add Todo
-              </button>
-            </div>
-          </form>
+      <form
+        encType="multipart/form-data"
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col m-auto  w-96 items-center gap-4 shadow-xl/10 px-5 pb-8 rounded-lg"
+      >
+        <div className="flex flex-col w-full items-center gap-2">
+          <h1 className="text-blue-500 font-bold text-2xl mt-4 mb-4 select-none">
+            Cadastrar tarefa
+          </h1>
+          <label className="text-blue-500 font-extrabold text-base w-full ml-8 select-none">
+            Título
+          </label>
+          <TextBox
+            placeholder="Insira o título da tarefa"
+            register={register}
+            name="title"
+            required={true}
+          />
+          <label
+            for="file"
+            className="flex justify-center items-center py-2 bg-emerald-500 rounded-sm w-11/12 cursor-pointer hover:scale-101 duration-500 delay-400 text-white font-bold tracking-wide text-base select-none"
+          >
+            Escolher Arquivo <CgAttachment className="ml-2" />
+          </label>
+          <input
+            id="file"
+            type="file"
+            className="hidden"
+            {...register("file", { required: false })}
+          />
         </div>
-        <div className="todos-section">
-          {(!loading &&
-            todos.map((todo) => (
-              <div className="todo-item" key={todo.id ?? 0}>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  disabled={todo.completed}
-                  id={`todo-${todo.id}`}
-                  onChange={() => completeTodo(todo.id)}
-                />
-                {todo.file_id && (
-                  <span>
-                    <a onClick={() => openAttachment(todo)}> Open Attachment</a>
-                  </span>
-                )}
-                <label htmlFor={`todo-${todo.id}`} className="todo-title">
-                  {todo.completed && <s>{todo.title}</s>}
-                  {!todo.completed && todo.title}
-                </label>
-                <button type="button" onClick={() => handleDeleteTodo(todo.id)}>
-                  Delete
-                </button>
-              </div>
-            ))) || (
-            <div className="todo-item">
-              <label className="todo-title">Loading...</label>
-            </div>
-          )}
-        </div>
+        <Button texto="Adicionar tarefa" type="submit" />
+      </form>
+
+      <div className="flex flex-col m-auto mt-9 w-1/2 gap-4">
+        {(!loading &&
+          todos.map((todo) => (
+            <ToDoItems
+              key={todo.id}
+              title={todo.title}
+              checked={todo.completed}
+              disable={todo.checked}
+              arquivo={todo.file_id}
+              onClickOpen={todoAttachment ? openAttachment(todo) : null}
+              onClickDelete={handleDeleteTodo(todo.id)}
+            />
+            // <div className="todo-item" key={todo.id ?? 0}>
+            //   <input
+            //     type="checkbox"
+            //     checked={todo.completed}
+            //     disabled={todo.completed}
+            //     id={`todo-${todo.id}`}
+            //     onChange={() => completeTodo(todo.id)}
+            //   />
+            //   {todo.file_id && (
+            //     <span>
+            //       <a onClick={() => openAttachment(todo)}> Open Attachment</a>
+            //     </span>
+            //   )}
+            //   <label htmlFor={`todo-${todo.id}`} className="todo-title">
+            //     {todo.completed && <s>{todo.title}</s>}
+            //     {!todo.completed && todo.title}
+            //   </label>
+            //   <button type="button" onClick={() => handleDeleteTodo(todo.id)}>
+            //     Delete
+            //   </button>
+            // </div>
+          ))) || (
+          <div className="todo-item">
+            <label className="todo-title">Loading...</label>
+          </div>
+        )}
       </div>
 
-      <div className="sign-out-section">
-        <button type="button" onClick={() => nhostClient.auth.signOut()}>
+      <div className="w-96 m-auto">
+        <button
+          type="button"
+          className="py-2 bg-red-600 text-white font-bold w-full rounded-sm cursor-pointer"
+          onClick={() => nhostClient.auth.signOut()}
+        >
           Sign Out
         </button>
       </div>

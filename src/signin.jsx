@@ -1,6 +1,7 @@
-import { useState } from "react";
 import { useSignInEmailPasswordless } from "@nhost/react";
 import { useForm } from "react-hook-form";
+import Button from "./components/Button";
+import TextBox from "./components/TextBox";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function SignIn() {
@@ -49,10 +50,11 @@ export default function SignIn() {
           <label className="text-blue-500 font-extrabold text-base w-full ml-8 select-none">
             Email
           </label>
-          <input
+          <TextBox
             placeholder="Insira seu email"
-            {...register("email", { required: true })}
-            className="py-2 rounded-sm  w-11/12 px-3 font-bold text-sm bg-stone-200 select-none"
+            register={register}
+            required={true}
+            name="email"
           />
           {errors.email && (
             <span className="text-red-800  text sm w-full ml-8 select-none">
@@ -60,15 +62,7 @@ export default function SignIn() {
             </span>
           )}
         </div>
-
-        <button
-          className="py-2 bg-blue-500 rounded-sm w-11/12 cursor-pointer hover:scale-101 duration-500 delay-400"
-          type="submit"
-        >
-          <p className="text-white font-bold tracking-wide text-base select-none">
-            Cadastrar
-          </p>
-        </button>
+        <Button type="submit" texto="Enviar email" />
       </form>
     </>
   );
