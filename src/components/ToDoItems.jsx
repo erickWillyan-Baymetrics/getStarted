@@ -7,19 +7,19 @@ export default function ToDoItems(props) {
       <input
         className="cursor-pointer"
         type="checkbox"
-        name=""
-        id=""
-        checked={props.checked}
-        disabled={props.checked}
+        id={`todo-${props.todo.id}`}
+        checked={props.todo.completed}
+        disabled={props.todo.completed}
+        onChange={() => props.onChangeCheckbox()}
       />
-      <label className="text-base font-semibold">{props.title}</label>
-      <div>
-        {props.arquivo ? (
+      <div className="flex justify-center">
+        <label className="text-base font-semibold">{props.todo.title}</label>
+      </div>
+      <div className="flex w-20 justify-end">
+        {props.todo.file_id ? (
           <button
-            onClick={() => {
-              props.onClickOpen();
-            }}
-            className="p-1 bg-emerald-400 rounded-sm cursor-pointer m-2"
+            onClick={() => props.onClickOpen()}
+            className="p-1 bg-emerald-400 rounded-sm cursor-pointer h-7 mr-2"
           >
             <CgAttachment color="#fff" size={20} />
           </button>
@@ -27,10 +27,8 @@ export default function ToDoItems(props) {
           <></>
         )}
         <button
-          onClick={() => {
-            props.onClickDelete();
-          }}
-          className="p-1 bg-blue-500 rounded-sm cursor-pointer"
+          onClick={() => props.onClickDelete()}
+          className="p-1 bg-blue-500 rounded-sm h-7 cursor-pointer"
         >
           <MdDelete color="#fff" size={20} />
         </button>

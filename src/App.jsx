@@ -1,8 +1,10 @@
 import { NhostProvider } from "@nhost/react";
 import { nhost } from "./lib/nhost.js";
-import SignIn from "./signin.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signup from "./signup.jsx";
 import Todos from "./todos.jsx";
 import { useEffect, useState } from "react";
+import AppRoutes from "./routes.jsx";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -17,7 +19,10 @@ function App() {
 
   return (
     <NhostProvider nhost={nhost}>
-      {session ? <Todos session={session} /> : <SignIn />}
+      <BrowserRouter>
+        <AppRoutes session={session} />
+        {/* {session ? <Todos session={session} /> : <Signup />} */}
+      </BrowserRouter>
     </NhostProvider>
   );
 }

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import TextBox from "./components/TextBox";
 import Button from "./components/Button";
 import ToDoItems from "./components/toDoItems";
+import { MdLogout } from "react-icons/md";
 
 const deleteTodo = `
     mutation($id: uuid!) {
@@ -170,7 +171,7 @@ export default function Todos() {
             required={true}
           />
           <label
-            for="file"
+            htmlFor="file"
             className="flex justify-center items-center py-2 bg-emerald-500 rounded-sm w-11/12 cursor-pointer hover:scale-101 duration-500 delay-400 text-white font-bold tracking-wide text-base select-none"
           >
             Escolher Arquivo <CgAttachment className="ml-2" />
@@ -185,39 +186,18 @@ export default function Todos() {
         <Button texto="Adicionar tarefa" type="submit" />
       </form>
 
-      <div className="flex flex-col m-auto mt-9 w-1/2 gap-4">
+      <div className="flex flex-col m-auto mt-9 w-1/2 gap-1">
         {(!loading &&
           todos.map((todo) => (
             <ToDoItems
               key={todo.id}
+              todo={todo}
               title={todo.title}
-              checked={todo.completed}
-              disable={todo.checked}
               arquivo={todo.file_id}
-              onClickOpen={todoAttachment ? openAttachment(todo) : null}
-              onClickDelete={handleDeleteTodo(todo.id)}
+              onClickOpen={() => openAttachment(todo)}
+              onClickDelete={() => handleDeleteTodo(todo.id)}
+              onChangeCheckbox={() => completeTodo(todo.id)}
             />
-            // <div className="todo-item" key={todo.id ?? 0}>
-            //   <input
-            //     type="checkbox"
-            //     checked={todo.completed}
-            //     disabled={todo.completed}
-            //     id={`todo-${todo.id}`}
-            //     onChange={() => completeTodo(todo.id)}
-            //   />
-            //   {todo.file_id && (
-            //     <span>
-            //       <a onClick={() => openAttachment(todo)}> Open Attachment</a>
-            //     </span>
-            //   )}
-            //   <label htmlFor={`todo-${todo.id}`} className="todo-title">
-            //     {todo.completed && <s>{todo.title}</s>}
-            //     {!todo.completed && todo.title}
-            //   </label>
-            //   <button type="button" onClick={() => handleDeleteTodo(todo.id)}>
-            //     Delete
-            //   </button>
-            // </div>
           ))) || (
           <div className="todo-item">
             <label className="todo-title">Loading...</label>
@@ -225,13 +205,13 @@ export default function Todos() {
         )}
       </div>
 
-      <div className="w-96 m-auto">
+      <div className=" fixed top-0 right-0 mt-5 mr-5 w-10 m-auto">
         <button
           type="button"
-          className="py-2 bg-red-600 text-white font-bold w-full rounded-sm cursor-pointer"
+          className="flex justify-center py-2 bg-red-600 text-white font-bold w-full rounded-md cursor-pointer"
           onClick={() => nhostClient.auth.signOut()}
         >
-          Sign Out
+          <MdLogout color="#fff" size={20} />
         </button>
       </div>
     </>

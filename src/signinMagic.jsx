@@ -4,7 +4,7 @@ import Button from "./components/Button";
 import TextBox from "./components/TextBox";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function SignIn() {
+export default function SigninMagic() {
   const {
     register,
     handleSubmit,
