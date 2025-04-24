@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useNhostClient, useFileUpload } from "@nhost/react";
 import { CgAttachment } from "react-icons/cg";
 import { useForm } from "react-hook-form";
-import TextBox from "./components/TextBox";
-import Button from "./components/Button";
-import ToDoItems from "./components/toDoItems";
+import TextBox from "../components/TextBox";
+import Button from "../components/Button";
+import ToDoItems from "../components/toDoItems";
 import { MdLogout } from "react-icons/md";
 
 const deleteTodo = `
@@ -182,8 +182,8 @@ export default function Todos() {
             className="hidden"
             {...register("file", { required: false })}
           />
+          <Button texto="Adicionar tarefa" type="submit" />
         </div>
-        <Button texto="Adicionar tarefa" type="submit" />
       </form>
 
       <div className="flex flex-col m-auto mt-9 w-1/2 gap-1">

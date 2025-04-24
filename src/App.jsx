@@ -1,8 +1,8 @@
 import { NhostProvider } from "@nhost/react";
 import { nhost } from "./lib/nhost.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signup from "./signup.jsx";
-import Todos from "./todos.jsx";
+import Signup from "./pages/Signup.jsx";
+import Todos from "./pages/Todos.jsx";
 import { useEffect, useState } from "react";
 import AppRoutes from "./routes.jsx";
 

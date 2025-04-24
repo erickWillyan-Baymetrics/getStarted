@@ -1,7 +1,7 @@
 import { useSignInEmailPasswordless } from "@nhost/react";
 import { useForm } from "react-hook-form";
-import Button from "./components/Button";
-import TextBox from "./components/TextBox";
+import Button from "../components/Button";
+import TextBox from "../components/TextBox";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function SigninMagic() {
@@ -31,6 +31,8 @@ export default function SigninMagic() {
       toast.dismiss();
       toast.error(err.message || "Erro ao enviar o email");
     }
+
+    reset();
   };
 
   return (

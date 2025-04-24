@@ -1,12 +1,12 @@
-import LabelForm from "./components/LabelForm";
-import { Link, useNavigate } from "react-router-dom";
+import LabelForm from "../components/LabelForm";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import TextBox from "./components/TextBox";
-import Button from "./components/Button";
-import { nhost } from "./lib/nhost";
+import TextBox from "../components/TextBox";
+import Button from "../components/Button";
+import { useSignUpEmailPassword } from "@nhost/react";
+import { nhost } from "../lib/nhost";
 import toast, { Toaster } from "react-hot-toast";
 export default function signup() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -14,13 +14,32 @@ export default function signup() {
     formState: { errors },
   } = useForm();
 
+  const { signUpEmailPassword } = useSignUpEmailPassword();
+
   const handleCreateUser = async (data) => {
-    const response = await nhost.auth.signUp({
-      email: data.email,
-      password: data.senha,
-    });
-    if (response.error) {
-      toast.error("Não foi possível realizar seu cadastro");
+    // const email = data.email;
+    // const password = data.password;
+    // const response = await signUpEmailPassword(email, password);
+
+    // const response = await nhost.auth.signUp({
+    //   email: data.email,
+    //   password: data.password,
+    // });
+    // if (response.error) {
+    //   toast.error("Não foi possível realizar seu cadastro");
+    // }
+
+    // console.log(response);
+    console.log("Dados recebidos do form:", data);
+
+    try {
+      const response = await nhost.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+      console.log("Resposta:", response);
+    } catch (err) {
+      console.error("Erro ao cadastrar:", err);
     }
     reset();
   };
@@ -50,7 +69,8 @@ export default function signup() {
             placeholder="Insira sua senha"
             register={register}
             required={true}
-            name="senha"
+            type="password"
+            name="password"
           />
         </div>
         <Button type="submit" texto="Cadastrar" />
