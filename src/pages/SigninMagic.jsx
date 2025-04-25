@@ -1,6 +1,7 @@
 import { useSignInEmailPasswordless } from "@nhost/react";
 import { useForm } from "react-hook-form";
 import Button from "../components/Button";
+import BackButton from "../components/BackButton";
 import TextBox from "../components/TextBox";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -43,11 +44,14 @@ export default function SigninMagic() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col m-auto  w-96 items-center gap-4 shadow-xl/20 px-5 pb-8 rounded-lg"
+        className="flex flex-col m-auto  w-96 items-center shadow-xl/20 px-5 pb-8 rounded-lg"
       >
+        <div className="flex justify-start mt-6 w-full">
+          <BackButton to="/" />
+        </div>
         <div className="flex flex-col w-full items-center gap-2">
-          <h1 className="text-blue-500 font-bold text-2xl mt-4 mb-4 select-none">
-            Sign
+          <h1 className="text-blue-500 font-bold text-2xl sselect-none">
+            Login
           </h1>
           <label className="text-blue-500 font-extrabold text-base w-full ml-8 select-none">
             Email
@@ -64,7 +68,9 @@ export default function SigninMagic() {
             </span>
           )}
         </div>
-        <Button type="submit" texto="Enviar email" />
+        <div className="flex justify-center w-full mt-4">
+          <Button type="submit" texto="Enviar email" />
+        </div>
       </form>
     </>
   );

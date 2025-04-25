@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import TextBox from "../components/TextBox";
 import Button from "../components/Button";
 import { useSignInEmailPassword } from "@nhost/react";
-import { nhost } from "../lib/nhost";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Signin() {
@@ -19,9 +18,9 @@ export default function Signin() {
 
     console.log(response);
 
-    // if (error) {
-    //   toast.error("Não possível realizar seu login");
-    // }
+    if (response.error) {
+      toast.error("Não possível realizar seu login");
+    }
 
     reset();
   };
@@ -50,6 +49,7 @@ export default function Signin() {
             placeholder="Insira sua senha"
             register={register}
             required={true}
+            type="password"
             name="password"
           />
           <Button type="submit" texto="Entrar" />
@@ -62,7 +62,7 @@ export default function Signin() {
             Criar uma conta
           </Link>
           <Link
-            to="/signup"
+            to="/magicLink"
             className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
           >
             | Login sem senha

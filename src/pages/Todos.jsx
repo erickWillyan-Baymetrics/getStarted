@@ -36,8 +36,6 @@ export default function Todos() {
   const [loading, setLoading] = useState(true);
   const [todos, setTodos] = useState([]);
 
-  const [todoTitle, setTodoTitle] = useState("");
-  const [todoAttachment, setTodoAttachment] = useState(null);
   const [fetchAll, setFetchAll] = useState(false);
   const nhostClient = useNhostClient();
   const { upload } = useFileUpload();
@@ -94,14 +92,12 @@ export default function Todos() {
       console.error({ error });
     }
 
-    setTodoTitle("");
-    setTodoAttachment(null);
     setFetchAll(true);
     reset();
   };
 
   const handleDeleteTodo = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this TODO?")) {
+    if (!window.confirm("Você realmente deseja deletar está tarefa?")) {
       return;
     }
 
