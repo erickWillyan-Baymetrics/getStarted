@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import TextBox from "../components/TextBox";
 import Button from "../components/Button";
 import ToDoItems from "../components/toDoItems";
-import { MdLogout } from "react-icons/md";
+import Header from "../components/Header";
 
 const deleteTodo = `
     mutation($id: uuid!) {
@@ -148,10 +148,11 @@ export default function Todos() {
 
   return (
     <>
+      <Header />
       <form
         encType="multipart/form-data"
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col m-auto  w-96 items-center gap-4 shadow-xl/10 px-5 pb-8 rounded-lg"
+        className="flex bg-white flex-col m-auto  w-96 items-center gap-4  px-5 pb-8 rounded-lg"
       >
         <div className="flex flex-col w-full items-center gap-2">
           <h1 className="text-blue-500 font-bold text-2xl mt-4 mb-4 select-none">
@@ -199,16 +200,6 @@ export default function Todos() {
             <label className="todo-title">Loading...</label>
           </div>
         )}
-      </div>
-
-      <div className=" fixed top-0 right-0 mt-5 mr-5 w-10 m-auto">
-        <button
-          type="button"
-          className="flex justify-center py-2 bg-red-600 text-white font-bold w-full rounded-md cursor-pointer"
-          onClick={() => nhostClient.auth.signOut()}
-        >
-          <MdLogout color="#fff" size={20} />
-        </button>
       </div>
     </>
   );

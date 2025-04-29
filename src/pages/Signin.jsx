@@ -16,8 +16,6 @@ export default function Signin() {
     const password = data.password;
     const response = await signInEmailPassword(email, password);
 
-    console.log(response);
-
     if (response.error) {
       toast.error("Não possível realizar seu login");
     }
@@ -26,14 +24,14 @@ export default function Signin() {
   };
   return (
     <>
+      <div>
+        <Toaster position="top-right" reverseOrder={false} />
+      </div>
       <form
         onSubmit={handleSubmit(handleSign)}
-        className="flex flex-col m-auto  w-96 items-center gap-4 shadow-xl/20 px-5 pb-8 rounded-lg"
+        className="flex flex-col m-auto mt-6 bg-white w-96 items-center gap-4  px-5 pb-8 rounded-lg"
       >
         <div className="flex flex-col w-full items-center gap-2">
-          <div>
-            <Toaster position="top-right" reverseOrder={false} />
-          </div>
           <h1 className="text-blue-500 font-bold text-2xl mt-4 mb-4 select-none">
             Login
           </h1>

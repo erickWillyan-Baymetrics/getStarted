@@ -3,7 +3,7 @@ import { CgAttachment } from "react-icons/cg";
 
 export default function ToDoItems(props) {
   return (
-    <div className="flex justify-between items-center rounded-sm shadow-sm py-2 px-4">
+    <div className="flex bg-white justify-between items-center rounded-sm shadow-sm py-2 px-4">
       <input
         className="cursor-pointer"
         type="checkbox"

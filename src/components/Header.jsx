@@ -1,0 +1,51 @@
+import { Link } from "react-router-dom";
+import { MdLogout } from "react-icons/md";
+import { useNhostClient } from "@nhost/react";
+import { useNavigate } from "react-router-dom";
+
+export default function Header() {
+  const nhostClient = useNhostClient();
+  const navigate = useNavigate();
+  return (
+    <nav className="flex h-12 justify-around mb-7 items-center">
+      <ul className="flex gap-8">
+        <li className="border-blue-500 hover:border-b-2 hover:border-b-blue-700 delay-100 duration-100">
+          <Link
+            className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
+            to="/"
+          >
+            Tarefas
+          </Link>
+        </li>
+        <li className="hover:border-b-2 hover:border-b-blue-700 delay-100 duration-100">
+          <Link
+            className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
+            to="/registerMachine"
+          >
+            Cadastrar máquinas
+          </Link>
+        </li>
+        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
+          <Link
+            className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
+            to="/registerPart"
+          >
+            Cadastrar peças
+          </Link>
+        </li>
+      </ul>
+      <div className=" w-10">
+        <button
+          type="button"
+          className="flex justify-center py-2 bg-red-600 text-white font-bold w-full rounded-md cursor-pointer"
+          onClick={() => {
+            nhostClient.auth.signOut();
+            navigate("/");
+          }}
+        >
+          <MdLogout color="#fff" size={20} />
+        </button>
+      </div>
+    </nav>
+  );
+}
