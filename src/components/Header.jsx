@@ -9,18 +9,18 @@ export default function Header() {
   return (
     <nav className="flex h-12 justify-around mb-7 items-center">
       <ul className="flex gap-8">
-        <li className="border-blue-500 hover:border-b-2 hover:border-b-blue-700 delay-100 duration-100">
+        {/* <li className="border-blue-500 hover:border-b-2 hover:border-b-blue-700 delay-100 duration-100">
           <Link
             className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
             to="/"
           >
             Tarefas
           </Link>
-        </li>
+        </li> */}
         <li className="hover:border-b-2 hover:border-b-blue-700 delay-100 duration-100">
           <Link
             className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
-            to="/registerMachine"
+            to="/"
           >
             Cadastrar máquinas
           </Link>
@@ -31,6 +31,14 @@ export default function Header() {
             to="/registerPart"
           >
             Cadastrar peças
+          </Link>
+        </li>
+        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
+          <Link
+            className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
+            to="/menagerMachine"
+          >
+            Máquinas
           </Link>
         </li>
       </ul>

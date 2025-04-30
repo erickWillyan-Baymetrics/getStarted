@@ -23,7 +23,7 @@ mutation(
   $maq_patrimonio: Int!,
   $maq_sistema_operacional: String!,
   $maq_serial: Int!,
-  $fk_user_id: uuid!    
+  $fk_user_id: uuid   
 ) {
   insert_maquina_one(object: {
     maq_marca: $maq_marca,
@@ -54,6 +54,11 @@ export default function RegisterMachine() {
   }, []);
 
   const addMachine = async (values) => {
+    if (values.fk_user_id == "Sem usuário") {
+      values.fk_user_id = null;
+    }
+
+    console.log(values);
     const { data, error } = await nhostClient.graphql.request(
       createMachine,
       values
@@ -120,10 +125,12 @@ export default function RegisterMachine() {
           <LabelForm title="Usuário" />
 
           <select
-            {...register("fk_user_id", { required: true })}
+            {...register("fk_user_id", { required: false })}
             className="py-2 rounded-sm w-11/12 px-3 font-bold text-sm bg-stone-200 select-none"
           >
-            <option value="">Selecione um usuário</option>
+            <option selected value="Sem usuário">
+              Sem usuário
+            </option>
             {users.map((user) => {
               return (
                 <option key={user.id} value={user.id}>
