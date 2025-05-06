@@ -54,7 +54,7 @@ export default function ManagerMachine() {
       <h4 className="w-11/12 m-auto mb-8 text-blue-500 font-bold text-xl">
         Máquinas
       </h4>
-      <div className="grid justify-items-center grid-cols-4 gap-6 w-10/12 m-auto">
+      <div className="grid justify-items-center xl:grid-cols-5 sm:grid-cols-3 gap-6 w-10/12 m-auto">
         {/* {cards.map((data) => {
           return (
             <CardMachine

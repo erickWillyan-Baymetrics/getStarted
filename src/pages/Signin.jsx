@@ -1,5 +1,5 @@
 import LabelForm from "../components/LabelForm";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import TextBox from "../components/TextBox";
 import Button from "../components/Button";
@@ -15,11 +15,15 @@ export default function Signin() {
     const email = data.email;
     const password = data.password;
     const response = await signInEmailPassword(email, password);
+    console.log(response);
 
     if (response.error) {
       toast.error("Não possível realizar seu login");
     }
 
+    if (response.isSuccess == true) {
+      <Navigate to="/registerMachine" replace />;
+    }
     reset();
   };
   return (
