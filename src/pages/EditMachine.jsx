@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "../components/header";
+import Header from "../components/Header";
 import { useNhostClient } from "@nhost/react";
 import LabelForm from "../components/LabelForm";
 import TextBox from "../components/TextBox";

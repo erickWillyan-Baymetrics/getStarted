@@ -1,9 +1,9 @@
-import Header from "../components/header";
+import Header from "../components/Header";
 import { useForm } from "react-hook-form";
 import { useNhostClient } from "@nhost/react";
 import LabelForm from "../components/LabelForm";
 import TextBox from "../components/TextBox";
-import Button from "../components/button-register";
+import Button from "../components/Button";
 
 const createPart = `
   mutation($pec_marca: String!, $pec_modelo: String!, $pec_nome: String!, $pec_tamanho: Float) {

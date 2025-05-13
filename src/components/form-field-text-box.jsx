@@ -1,7 +1,7 @@
 import LabelForm from "./LabelForm";
 import TextBox from "./TextBox";
 
-export default function FormFieldTextBox({
+export default function formFieldTextBox({
   name,
   value,
   register,

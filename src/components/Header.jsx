@@ -25,45 +25,20 @@ export default function Header() {
             Cadastrar máquinas
           </Link>
         </li>
-        {/* <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
+        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
           <Link
             className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
             to="/registerPart"
           >
             Cadastrar peças
           </Link>
-        </li> */}
+        </li>
         <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
           <Link
             className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
             to="/menagerMachine"
           >
             Máquinas
-          </Link>
-        </li>
-        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
-          <Link
-            className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
-            to="/registerBrand"
-          >
-            Marca
-          </Link>
-        </li>
-        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
-          <Link
-            className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
-            to="/registerModel"
-          >
-            Modelo
-          </Link>
-        </li>
-
-        <li className="hover:border-b-2 hover:border-b-blue-700 delay-200 duration-200">
-          <Link
-            className="text-blue-500 font-bold  hover:text-blue-700 delay-100 duration-100"
-            to="/registerOperatingSystem"
-          >
-            Sistema Operacional
           </Link>
         </li>
       </ul>

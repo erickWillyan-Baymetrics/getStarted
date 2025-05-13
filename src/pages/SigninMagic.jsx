@@ -1,8 +1,8 @@
 import { useSignInEmailPasswordless } from "@nhost/react";
 import { useForm } from "react-hook-form";
-import Button from "../../components/button-register";
-import BackButton from "../../components/back-button";
-import TextBox from "../../components/TextBox";
+import Button from "../components/Button";
+import BackButton from "../components/BackButton";
+import TextBox from "../components/TextBox";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function SigninMagic() {

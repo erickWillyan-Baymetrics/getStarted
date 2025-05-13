@@ -2,10 +2,10 @@ import LabelForm from "../components/LabelForm";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import TextBox from "../components/TextBox";
-import Button from "../components/button-register";
+import Button from "../components/Button";
 import { useSignUpEmailPassword } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
-import BackButton from "../components/back-button";
+import BackButton from "../components/BackButton";
 export default function signup() {
   const {
     register,

@@ -3,46 +3,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@nhost/react";
 import Signup from "./pages/Signup";
 import Todos from "./pages/Todos";
-import SigninMagic from "./pages/signPages/SigninMagic";
-import Signin from "./pages/signPages/Signin";
+import SigninMagic from "./pages/SigninMagic";
+import Signin from "./pages/Signin";
 import RegisterMachine from "./pages/RegisterMachine";
 import RegisterPart from "./pages/RegisterPart";
 import ManagerMachine from "./pages/ManagerMachine";
 import EditMachine from "./pages/EditMachine";
-import RegisterBrand from "./pages/brand/register-brand";
-import RegisterModel from "./pages/model/register-model";
-import RegisterOperatingSystem from "./pages/operatingSystem/register-operating-system";
 
-export default function AppRoutes() {
+export default function AppRoutes({ session }) {
+  console.log(!session);
   return (
     <Routes>
-      <Route
-        path="/registerOperatingSystem"
-        element={
-          <SignedIn>
-            <RegisterOperatingSystem />
-          </SignedIn>
-        }
-      />
-
-      <Route
-        path="/registerBrand"
-        element={
-          <SignedIn>
-            <RegisterBrand />
-          </SignedIn>
-        }
-      />
-
-      <Route
-        path="/registerModel"
-        element={
-          <SignedIn>
-            <RegisterModel />
-          </SignedIn>
-        }
-      />
-
       <Route
         path="/menagerMachine"
         element={
