@@ -1,10 +1,13 @@
-import Header from "../components/Header";
+import Header from "../components/header";
 import LabelForm from "../components/LabelForm";
-import TextBox from "../components/TextBox";
+import FormFieldSelectBox from "../components/form-field-select-box";
+import FormFieldTextBox from "../components/form-field-text-box";
+import FormRegister from "../components/form-register";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNhostClient } from "@nhost/react";
-import Button from "../components/Button";
+import Button from "../components/button-register";
+import toast, { Toaster } from "react-hot-toast";
 
 const getUsers = `
 query {
@@ -15,25 +18,36 @@ query {
 }
 `;
 
+const getOperatingSystem = `
+  query{
+  sistema_operacional(where: {sto_status: {_eq: "ativo"}}) {
+    sto_id
+    sto_nome
+  }
+}
+`;
+
+const getModel = `
+  query{
+   modelo{
+    mod_id
+    mod_nome
+  }
+}
+`;
+
 const createMachine = `
 mutation(
-  $maq_marca: String!,
-  $maq_modelo: String!,
+$fk_modelo_id: Int!,
+$fk_sistema_operacional_id: Int!,
+$fk_users_id: uuid, 
   $maq_nome: String!,
-  $maq_patrimonio: Int!,
-  $maq_sistema_operacional: String!,
-  $maq_serial: Int!,
-  $fk_user_id: uuid   
-) {
-  insert_maquina_one(object: {
-    maq_marca: $maq_marca,
-    maq_modelo: $maq_modelo,
-    maq_nome: $maq_nome,
-    maq_patrimonio: $maq_patrimonio,
-    maq_sistema_operacional: $maq_sistema_operacional,
-    maq_serial: $maq_serial,
-    fk_user_id: $fk_user_id   
-  }) {
+   $maq_observacoes: String,
+    $maq_patrimonio: Int!,
+     $maq_serial: Int!,
+      $maq_status: String
+      ) {
+  insert_maquina_one(object: {fk_modelo_id: $fk_modelo_id, fk_sistema_operacional_id: $fk_sistema_operacional_id, fk_users_id: $fk_users_id, maq_nome: $maq_nome, maq_observacoes: $maq_observacoes, maq_patrimonio: $maq_patrimonio, maq_serial: $maq_serial, maq_status: $maq_status}) {
     maq_id
   }
 }
@@ -41,6 +55,8 @@ mutation(
 export default function RegisterMachine() {
   const { register, reset, handleSubmit } = useForm();
   const [users, setUsers] = useState([]);
+  const [operatingSystem, setOperatingSystem] = useState([]);
+  const [models, setModel] = useState([]);
   const nhostClient = useNhostClient();
 
   useEffect(() => {
@@ -50,7 +66,21 @@ export default function RegisterMachine() {
       setUsers(response.data.users);
     };
 
+    const getOperatingSystemFunction = async () => {
+      const response = await nhostClient.graphql.request(getOperatingSystem);
+
+      setOperatingSystem(response.data.sistema_operacional);
+    };
+
+    const getModelsFunction = async () => {
+      const response = await nhostClient.graphql.request(getModel);
+
+      setModel(response.data.modelo);
+    };
+
     getUsersFunction();
+    getOperatingSystemFunction();
+    getModelsFunction();
   }, []);
 
   const addMachine = async (values) => {
@@ -58,7 +88,13 @@ export default function RegisterMachine() {
       values.fk_user_id = null;
     }
 
-    console.log(values);
+    values.maq_serial = parseInt(values.maq_serial);
+    values.maq_patrimonio = parseInt(values.maq_patrimonio);
+    values.fk_modelo_id = parseInt(values.fk_modelo_id);
+    values.fk_sistema_operacional_id = parseInt(
+      values.fk_sistema_operacional_id
+    );
+
     const { data, error } = await nhostClient.graphql.request(
       createMachine,
       values
@@ -66,82 +102,105 @@ export default function RegisterMachine() {
     if (error) {
       console.log(error);
     }
-    console.log(data);
+    toast.success("Máquina cadastrada");
     reset();
   };
   return (
     <>
+      <div>
+        <Toaster position="top-right" reverseOrder={false} />
+      </div>
       <Header />
-      <form
+      <FormRegister
         onSubmit={handleSubmit(addMachine)}
-        className="flex flex-col m-auto mt-6 bg-white w-96 items-center gap-4  px-5 pb-8 rounded-lg"
+        title="Cadastrar máquina"
+        titlePostion="center"
+        weight="w-96"
+        titleSize="xl"
       >
-        <div className="flex flex-col w-full items-center gap-2">
-          <h6 className="text-blue-500 font-bold text-xl mt-4 mb-4 select-none">
-            Cadastrar máquina
-          </h6>
-          <LabelForm title="Nome da máquina" />
-          <TextBox
-            placeholder="Insira o nome da máquina"
-            register={register}
-            required={true}
-            name="maq_nome"
-          />
-          <LabelForm title="Número serial" />
-          <TextBox
-            placeholder="Insira o número serial"
-            register={register}
-            required={true}
-            name="maq_serial"
-          />
-          <LabelForm title="Patrimônio" />
-          <TextBox
-            placeholder="Insira o número do patrimônio"
-            register={register}
-            required={true}
-            name="maq_patrimonio"
-          />
-          <LabelForm title="Nome da marca" />
-          <TextBox
-            placeholder="Insira o nome da marca"
-            register={register}
-            required={true}
-            name="maq_marca"
-          />
-          <LabelForm title="Nome do modelo" />
-          <TextBox
-            placeholder="Insira o nome do modelo"
-            register={register}
-            required={true}
-            name="maq_modelo"
-          />
-          <LabelForm title="Sistema operacional" />
-          <TextBox
-            placeholder="Insira o sistema operacional"
-            register={register}
-            required={true}
-            name="maq_sistema_operacional"
-          />
-          <LabelForm title="Usuário" />
-
-          <select
-            {...register("fk_user_id", { required: false })}
-            className="py-2 rounded-sm w-11/12 px-3 font-bold text-sm bg-stone-200 select-none"
-          >
-            <option selected value="Sem usuário">
-              Sem usuário
-            </option>
-            {users.map((user) => {
-              return (
-                <option key={user.id} value={user.id}>
-                  {user.email}
-                </option>
-              );
-            })}
-          </select>
-          <Button type="submit" texto="Cadastrar" />
-        </div>
-      </form>
+        <FormFieldTextBox
+          name="maq_nome"
+          register={register}
+          required={true}
+          placeholder="Digite o nome da máquina"
+          size="w-full"
+          title="Nome da máquina"
+        />
+        <FormFieldTextBox
+          name="maq_serial"
+          register={register}
+          required={true}
+          placeholder="Digite o número serial"
+          size="w-full"
+          title="Número Serial"
+        />
+        <FormFieldTextBox
+          name="maq_patrimonio"
+          register={register}
+          required={true}
+          placeholder="Digite o número do patrimônio"
+          size="w-full"
+          title="Número do patrimônio"
+        />
+        <FormFieldSelectBox
+          name="fk_sistema_operacional_id"
+          fieldId="sto_id"
+          fieldName="sto_nome"
+          register={register}
+          options={operatingSystem}
+          required={true}
+          size="w-full"
+          disbableText="Selecione um sistema operacional"
+          title="Sistema operacional"
+        />
+        <FormFieldSelectBox
+          name="fk_modelo_id"
+          fieldId="mod_id"
+          fieldName="mod_nome"
+          register={register}
+          options={models}
+          required={true}
+          size="w-full"
+          disbableText="Selecione um modelo"
+          title="Modelo"
+        />
+        {/* <FormFieldSelectBox
+          name="fk_modelo_id"
+          fieldId="mod_id"
+          fieldName="mod_nome"
+          register={register}
+          options={models}
+          required={true}
+          size="w-full"
+          disbableText="Selecione um modelo"
+          title="Modelo"
+        /> */}
+        <FormFieldSelectBox
+          name="fk_users_id"
+          fieldId="id"
+          fieldName="email"
+          register={register}
+          options={users}
+          required={true}
+          size="w-full"
+          disbableText="Selecione um usuário"
+          title="Usuário (opcional)"
+        />
+        <input
+          type="checkbox"
+          name="ativo"
+          value="ativo"
+          className="mt-2"
+          {...register("maq_status", { required: false })}
+        />
+        <label
+          className=" ml-2 text-base text-gray-600 font-semibold"
+          htmlFor="ativo"
+        >
+          Ativo
+        </label>
+        <Button text="Cadastrar" />
+      </FormRegister>
     </>
   );
 }

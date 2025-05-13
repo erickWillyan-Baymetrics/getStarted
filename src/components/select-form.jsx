@@ -10,11 +10,10 @@ export default function SelectForm({
 }) {
   return (
     <select
-      defaultValue=""
       {...(register ? register(name, { required }) : {})}
       className={`py-2 rounded-sm ${size} px-3 font-bold text-sm bg-stone-200 select-none curso`}
     >
-      <option disabled value="">
+      <option disabled selected value=" ">
         {disbableText}
       </option>
       {options.map((option) => {
