@@ -3,9 +3,9 @@ import { useNhostClient, useFileUpload } from "@nhost/react";
 import { CgAttachment } from "react-icons/cg";
 import { useForm } from "react-hook-form";
 import TextBox from "../components/TextBox";
-import Button from "../components/Button";
+import Button from "../components/button-register";
 import ToDoItems from "../components/toDoItems";
-import Header from "../components/Header";
+import Header from "../components/header";
 
 const deleteTodo = `
     mutation($id: uuid!) {

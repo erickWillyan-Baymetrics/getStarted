@@ -1,8 +1,8 @@
-import LabelForm from "../components/LabelForm";
+import LabelForm from "../../components/LabelForm";
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import TextBox from "../components/TextBox";
-import Button from "../components/Button";
+import TextBox from "../../components/TextBox";
+import Button from "../../components/button-register";
 import { useSignInEmailPassword } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
 

@@ -7,16 +7,17 @@ export default function TextBox({
   value,
   readOnly,
   defaultValue,
+  size,
 }) {
   return (
     <input
       placeholder={placeholder}
-      type={type ? type : "text"}
+      type={type}
       value={value}
       readOnly={readOnly}
       defaultValue={defaultValue}
-      className="py-2 rounded-sm w-11/12 px-3 font-bold text-sm bg-stone-200 select-none"
-      {...register(name, { required })}
+      className={`py-2 rounded-sm px-3 ${size} font-bold text-sm bg-stone-200 select-none`}
+      {...(register ? register(name, { required }) : {})}
     />
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNhostClient } from "@nhost/react";
-import Header from "../components/Header";
+import Header from "../components/header";
 import CardMachine from "../components/CardMachine";
 
 const getMachine = `
