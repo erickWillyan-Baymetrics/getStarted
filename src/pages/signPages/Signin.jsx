@@ -1,10 +1,10 @@
-import LabelForm from "../../components/LabelForm";
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import TextBox from "../../components/TextBox";
 import Button from "../../components/button-register";
 import { useSignInEmailPassword } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
+import FormRegister from "../../components/form-register";
+import FormFieldTextBox from "../../components/form-field-text-box";
 
 export default function Signin() {
   const { register, handleSubmit, reset } = useForm();
@@ -15,14 +15,13 @@ export default function Signin() {
     const email = data.email;
     const password = data.password;
     const response = await signInEmailPassword(email, password);
-    console.log(response);
 
     if (response.error) {
       toast.error("Não possível realizar seu login");
     }
 
     if (response.isSuccess == true) {
-      <Navigate to="/registerMachine" replace />;
+      <Navigate to="managerMachine" replace />;
     }
     reset();
   };
@@ -31,46 +30,40 @@ export default function Signin() {
       <div>
         <Toaster position="top-right" reverseOrder={false} />
       </div>
-      <form
+      <FormRegister
         onSubmit={handleSubmit(handleSign)}
-        className="flex flex-col m-auto mt-6 bg-white w-96 items-center gap-4  px-5 pb-8 rounded-lg"
+        title="Login"
+        titlePostion="center"
+        weight="w-96"
+        titleSize="xl"
       >
-        <div className="flex flex-col w-full items-center gap-2">
-          <h1 className="text-blue-500 font-bold text-2xl mt-4 mb-4 select-none">
-            Login
-          </h1>
-          <LabelForm title="Email" />
-          <TextBox
-            placeholder="Insira seu email"
-            register={register}
-            required={true}
-            name="email"
-          />
-          <LabelForm title="Senha" />
-          <TextBox
-            placeholder="Insira sua senha"
-            register={register}
-            required={true}
-            type="password"
-            name="password"
-          />
-          <Button type="submit" texto="Entrar" />
-        </div>
-        <div>
+        <FormFieldTextBox
+          name="email"
+          register={register}
+          required={true}
+          placeholder="Digite o seu email"
+          size="w-full"
+          title="Email"
+        />
+        <FormFieldTextBox
+          name="password"
+          register={register}
+          required={true}
+          type="password"
+          placeholder="Digite sua senha"
+          size="w-full"
+          title="Senha"
+        />
+        <Button text="Entrar" />
+        <div className="flex w-full justify-center px-4 mt-2">
           <Link
             to="/signup"
-            className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200 m-1"
+            className="text-blue-500 font-bold hover:text-blue-700 delay-200 duration-200 "
           >
             Criar uma conta
           </Link>
-          <Link
-            to="/magicLink"
-            className="text-blue-500 font-bold  hover:text-blue-700 delay-200 duration-200"
-          >
-            | Login sem senha
-          </Link>
         </div>
-      </form>
+      </FormRegister>
     </>
   );
 }
