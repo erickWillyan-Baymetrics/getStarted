@@ -1,11 +1,9 @@
-import LabelForm from "../components/LabelForm";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import TextBox from "../components/TextBox";
 import Button from "../components/button-register";
 import { useSignUpEmailPassword } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
-import BackButton from "../components/back-button";
+import FormRegister from "../components/form-register";
+import FormFieldTextBox from "../components/form-field-text-box";
 export default function signup() {
   const {
     register,
@@ -30,7 +28,34 @@ export default function signup() {
       <div>
         <Toaster position="top-right" reverseOrder={false} />
       </div>
-      <form
+      <FormRegister
+        onSubmit={handleSubmit(handleCreateUser)}
+        title="Criar conta"
+        titlePostion="center"
+        weight="w-96"
+        titleSize="xl"
+        backRoute="/"
+      >
+        <FormFieldTextBox
+          name="email"
+          register={register}
+          required={true}
+          placeholder="Digite o seu email"
+          size="w-full"
+          title="Email"
+        />
+        <FormFieldTextBox
+          name="password"
+          register={register}
+          required={true}
+          placeholder="Digite sua senha"
+          size="w-full"
+          title="Senha"
+        />
+        <Button text="Criar conta" />
+      </FormRegister>
+
+      {/* <form
         onSubmit={handleSubmit(handleCreateUser)}
         className="flex flex-col m-auto  w-96 items-center shadow-xl/20 px-5 pb-8 rounded-lg"
       >
@@ -59,7 +84,7 @@ export default function signup() {
           />
         </div>
         <Button type="submit" texto="Cadastrar" />
-      </form>
+      </form> */}
     </>
   );
 }
