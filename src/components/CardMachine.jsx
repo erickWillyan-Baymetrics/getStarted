@@ -11,10 +11,10 @@ export default function CardMachine({ maq_id, maq_nome, maq_serial }) {
       </div>
       <div className="flex justify-end">
         <Link
-          to={`/editMachine/${maq_id}`}
+          to={`/informationMachine/${maq_id}`}
           className=" py-1 px-3 bg-blue-500 rounded-sm text-white font-bold"
         >
-          Editar
+          Visualizar
         </Link>
       </div>
     </div>
