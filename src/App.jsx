@@ -1,10 +1,10 @@
 import { NhostProvider } from "@nhost/react";
 import { nhost } from "./lib/nhost.js";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signup from "./pages/Signup.jsx";
-import Todos from "./pages/Todos.jsx";
+import { BrowserRouter } from "react-router-dom";
 import { useEffect, useState } from "react";
-import AppRoutes from "./routes.jsx";
+import AppRoutes from "../src/routes/routes.jsx";
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "./lib/apollo.js";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -19,10 +19,11 @@ function App() {
 
   return (
     <NhostProvider nhost={nhost}>
-      <BrowserRouter>
-        <AppRoutes session={session} />
-        {/* {session ? <Todos session={session} /> : <Signup />} */}
-      </BrowserRouter>
+      <ApolloProvider client={apolloClient}>
+        <BrowserRouter>
+          <AppRoutes session={session} />
+        </BrowserRouter>
+      </ApolloProvider>
     </NhostProvider>
   );
 }
