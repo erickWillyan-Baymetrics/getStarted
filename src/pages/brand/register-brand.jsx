@@ -5,32 +5,26 @@ import Header from "../../components/header";
 import FormFieldTextBox from "../../components/form-field-text-box";
 import Button from "../../components/button-register";
 import { useForm } from "react-hook-form";
-import { useNhostClient } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
-
-const createBrand = `
-  mutation($mar_nome: String!) {
-  insert_marca_one(object: {mar_nome: $mar_nome}) {
-    mar_id
-    mar_nome
-  }
-}
-`;
+import { useMutation } from "@apollo/client";
+import { CREATE_BRAND } from "../../graphql/mutations/brand/create-brand";
 
 export default function RegisterBrand() {
   const { register, reset, handleSubmit } = useForm();
-  const nhostClient = useNhostClient();
+  const [CreateBrand] = useMutation(CREATE_BRAND);
 
   const insertBrand = async (values) => {
-    const { error } = await nhostClient.graphql.request(createBrand, values);
+    try {
+      await CreateBrand({
+        variables: values,
+      });
 
-    if (error) {
-      toast.error(`Erro: ${error[0].message}`);
-    } else {
       toast.success("Marca cadastrada com sucesso");
+      reset();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao cadastrar marca");
     }
-
-    reset();
   };
 
   return (
