@@ -1,39 +1,25 @@
 import Header from "../../components/header";
 import FormRegister from "../../components/form-register";
-import { useNhostClient } from "@nhost/react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/button-register";
 import FormFieldTextBox from "../../components/form-field-text-box";
 import toast, { Toaster } from "react-hot-toast";
-
-const createOperatingSystem = `
-mutation($sto_nome: String!) {
-  insert_sistema_operacional_one(object: {sto_nome: $sto_nome}) {
-    sto_id
-    sto_nome
-    sto_status
-  }
-}
-
-`;
+import { CREATE_OPERATING_SYSTEM } from "../../graphql/mutations/operatingSystem/create-operating-system";
+import { useMutation } from "@apollo/client";
 
 export default function RegisterOperatingSystem() {
   const { register, reset, handleSubmit } = useForm();
-  const nhostClient = useNhostClient();
+  const [CreateOperatingSystem] = useMutation(CREATE_OPERATING_SYSTEM);
 
   const insertOperatingSystem = async (values) => {
-    const { error } = await nhostClient.graphql.request(
-      createOperatingSystem,
-      values
-    );
-
-    if (error) {
-      toast.error(`Erro: ${error[0].message}`);
-    } else {
-      toast.success("Sistema Operacional cadastrado");
+    try {
+      await CreateOperatingSystem({ variables: values });
+      toast.success("Sistema operacional cadastrado");
+      reset();
+    } catch (error) {
+      console.log(error);
+      toast.error("Sitema operacional não cadastrado");
     }
-
-    reset();
   };
   return (
     <>
