@@ -1,22 +1,22 @@
 import LabelForm from "./LabelForm";
-import TextBox from "./TextBox";
+import TextareaForm from "./textarea-form";
 
-export default function FormFieldTextBox({
+export default function FormFieldTextarea({
+  placeholder,
   name,
-  value,
   register,
   required,
-  defaultValue,
-  readOnly,
   type,
-  placeholder,
+  value,
+  readOnly,
+  defaultValue,
   size,
   title,
 }) {
   return (
     <div className={`${size} flex flex-col`}>
       <LabelForm title={title} />
-      <TextBox
+      <TextareaForm
         name={name}
         register={register}
         required={required}

@@ -3,7 +3,7 @@ import SelectForm from "./select-form";
 
 export default function FormFieldSelectBox({
   options,
-  disbableText,
+  disableText,
   name,
   required,
   register,
@@ -11,6 +11,8 @@ export default function FormFieldSelectBox({
   fieldId,
   title,
   size,
+  selectedText,
+  defaultValue,
 }) {
   return (
     <div className={`${size} flex flex-col`}>
@@ -22,7 +24,9 @@ export default function FormFieldSelectBox({
         register={register}
         options={options}
         required={required}
-        disbableText={disbableText}
+        disableText={disableText}
+        selectedText={selectedText}
+        defaultValue={defaultValue}
         size="w-full"
       />
       {/* <div className="h-44 w-[800px]"></div> */}
