@@ -3,62 +3,42 @@ import FormRegister from "../../components/form-register";
 import { useForm } from "react-hook-form";
 import FormFieldTextBox from "../../components/form-field-text-box";
 import Button from "../../components/button-register";
-import { useNhostClient } from "@nhost/react";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import SelectForm from "../../components/select-form";
-import { data } from "react-router-dom";
 import FormFieldSelectBox from "../../components/form-field-select-box";
-
-const createModel = `
-  mutation($mod_nome: String!, $fk_marca_id: Int!) {
-  insert_modelo_one(object: {mod_nome: $mod_nome, fk_marca_id: $fk_marca_id}) {
-    mod_id
-    mod_nome
-    fk_marca_id 
-  }
-}
-`;
-
-const getBrands = `
-query{
-  marca {
-    mar_id
-    mar_nome
-  }
-}
-
-`;
+import { useMutation, useQuery } from "@apollo/client";
+import { LIST_BRAND } from "../../graphql/queries/brand/list-brand";
+import { CREATE_MODEL } from "../../graphql/mutations/model/create-model";
+import LoadingPage from "../../components/loadingComponent";
+LoadingPage;
 
 export default function registerModel() {
   const [brands, setBrands] = useState([]);
-  const nhostClient = useNhostClient();
   const { register, reset, handleSubmit } = useForm();
+  const { data, loading, error } = useQuery(LIST_BRAND);
+  const [CreateModel] = useMutation(CREATE_MODEL);
 
   useEffect(() => {
-    const getBrandFunction = async () => {
-      const { data, error } = await nhostClient.graphql.request(getBrands);
-
-      if (error) {
-        console.log(error);
-      } else {
-        setBrands(data.marca);
-      }
-    };
-
-    getBrandFunction();
-  }, []);
-
-  const insertModel = async (values) => {
-    const { error } = await nhostClient.graphql.request(createModel, values);
-
-    if (error) {
-      toast.error(`Erro: ${error[0].message}`);
-    } else {
-      toast.success("Modelo cadastrado com sucesso");
+    if (data && data.marca) {
+      setBrands(data.marca);
     }
+  }, [data]);
 
-    reset();
+  if (loading) {
+    return <LoadingPage />;
+  }
+  const insertModel = async (values) => {
+    try {
+      await CreateModel({
+        variables: values,
+      });
+
+      toast.success("Modelo cadastrado com sucesso");
+      reset();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao cadastrar modelo");
+    }
   };
 
   return (
@@ -89,21 +69,11 @@ export default function registerModel() {
           options={brands}
           required={true}
           size="w-full"
-          disbableText="Selecione uma marca"
+          disableText="Selecione uma marca"
           title="Marca do modelo"
         />
 
         <Button text="Cadastrar" />
-        {/* <SelectForm
-          name="fk_marca_id"
-          fieldId="mar_id"
-          fieldName="mar_nome"
-          register={register}
-          options={brands}
-          required={true}
-          size="w-full"
-          disbableText="Selecione uma marca"
-        /> */}
       </FormRegister>
     </>
   );
