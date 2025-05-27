@@ -51,40 +51,10 @@ export default function signup() {
           placeholder="Digite sua senha"
           size="w-full"
           title="Senha"
+          type="password"
         />
         <Button text="Criar conta" />
       </FormRegister>
-
-      {/* <form
-        onSubmit={handleSubmit(handleCreateUser)}
-        className="flex flex-col m-auto  w-96 items-center shadow-xl/20 px-5 pb-8 rounded-lg"
-      >
-        <div className="flex justify-start mt-6 w-full">
-          <BackButton to="/" />
-        </div>
-        <div className="flex flex-col w-full mb-4 items-center gap-2">
-          <h1 className="text-blue-500 font-bold text-2xl select-none">
-            Sign Up
-          </h1>
-          <LabelForm title="Email" />
-          <TextBox
-            placeholder="Insira seu email"
-            register={register}
-            required={true}
-            name="email"
-          />
-
-          <LabelForm title="Senha" />
-          <TextBox
-            placeholder="Insira sua senha"
-            register={register}
-            required={true}
-            type="password"
-            name="password"
-          />
-        </div>
-        <Button type="submit" texto="Cadastrar" />
-      </form> */}
     </>
   );
 }
